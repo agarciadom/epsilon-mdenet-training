@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Antonio Garcia-Dominguez">
+  <meta name="dcterms.date" content="2021-10-26">
+  <title>Epsilon MDENet Training</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="./reveal.js/dist/reset.css">
+  <link rel="stylesheet" href="./reveal.js/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #cccccc; background-color: #303030; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ffcfaf; } /* Alert */
+    code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+    code span.at { } /* Attribute */
+    code span.bn { color: #dca3a3; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #f0dfaf; } /* ControlFlow */
+    code span.ch { color: #dca3a3; } /* Char */
+    code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+    code span.co { color: #7f9f7f; } /* Comment */
+    code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+    code span.do { color: #7f9f7f; } /* Documentation */
+    code span.dt { color: #dfdfbf; } /* DataType */
+    code span.dv { color: #dcdccc; } /* DecVal */
+    code span.er { color: #c3bf9f; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #c0bed1; } /* Float */
+    code span.fu { color: #efef8f; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+    code span.kw { color: #f0dfaf; } /* Keyword */
+    code span.op { color: #f0efd0; } /* Operator */
+    code span.ot { color: #efef8f; } /* Other */
+    code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+    code span.sc { color: #dca3a3; } /* SpecialChar */
+    code span.ss { color: #cc9393; } /* SpecialString */
+    code span.st { color: #cc9393; } /* String */
+    code span.va { } /* Variable */
+    code span.vs { color: #cc9393; } /* VerbatimString */
+    code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="./reveal.js/dist/theme/night.css" id="theme">
+  <link rel="stylesheet" href="slides.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+<script>mermaid.initialize({ startOnLoad: true, theme: "dark" });</script>
+  <div class="reveal">
+    <div class="slides">
+<div class="footer">
+  Epsilon MDENet Training - Antonio García-Domínguez (Aston University) - <a href="https://twitter.com/antoniogado">@antoniogado</a>
+</div>
+<section id="title-slide">
+  <h1 class="title">Epsilon MDENet Training</h1>
+  <p class="author">Antonio Garcia-Dominguez</p>
+  <p class="date">October 26, 2021</p>
+</section>
+
+<section>
+<section id="introduction" class="title-slide slide level1">
+<h1>Introduction</h1>
+
+</section>
+<section id="who-am-i" class="slide level2">
+<h2>Who am I?</h2>
+<ul>
+<li>Lecturer in Computer Science at Aston University</li>
+<li>Committer in <a href="https://eclipse.org/epsilon">Eclipse Epsilon</a> since 2011</li>
+<li>Used Epsilon for several approaches:
+<ul>
+<li>Test design and generation</li>
+<li>Process-oriented website generation</li>
+<li>Self-adaptive system introspection</li>
+<li>Timetable optimisation and export/import</li>
+</ul></li>
+</ul>
+</section>
+<section id="session-outline" class="slide level2">
+<h2>Session outline</h2>
+<ol type="1">
+<li>Basics: models, metamodels, etc.</li>
+<li>High-level view of the Epsilon project</li>
+<li>Exercises with the <a href="https://www.eclipse.org/epsilon/live/">Epsilon Playground</a>:
+<ul>
+<li>EOL: the base expression language</li>
+<li>ETL: transform a model to another model</li>
+<li>EGL: generate text from a model</li>
+</ul></li>
+</ol>
+</section>
+<section id="what-is-model-driven-engineering" class="slide level2">
+<h2>What is Model-Driven Engineering?</h2>
+<ul>
+<li>In “traditional” engineering, we develop the system directly on the implementation language</li>
+<li>Model-driven engineering (MDE) uses instead <em>modeling languages</em> specific to the problem</li>
+<li>A railway engineer cares about railways: the actual implementation will come later!</li>
+</ul>
+<p><small><a href="http://blog.jot.fm/2013/01/25/lies-damned-lies-and-uml2java/">This JOT blog post</a> talks about what MDE is <em>not</em>, too!</small></p>
+</section>
+<section id="some-basic-terms-in-mde-12" class="slide level2 diagram-slide">
+<h2 class="diagram-slide">Some basic terms in MDE (1/2)</h2>
+<div class="columns">
+<div class="column" data-align="center" style="width:30%;">
+<div>
+<span class="diagram-data" style="display: none;">
+  graph TD;
+    M[Model] -->|describes| S[System];
+    ML[Modeling Language] -->|used to specify| M;
+</span>
+<div class="diagram-display"></div>
+</div>
+</div><div class="column" data-align="center" style="width:70%;">
+<ul>
+<li>We are developing a <em>system</em> <small>(e.g. a railway control system)</small></li>
+<li>The <em>model</em> describes a part of it <small>(e.g. the tracks, sensors, and actuators)</small></li>
+<li>A <em>modeling language</em> is used to specify the model<br/><small>(e.g. <a href="https://www.railml.org/en/">railML</a>)</small></li>
+<li>A <em>modeling language</em> has:
+<ul>
+<li><em>Abstract syntax</em>: concepts</li>
+<li><em>Concrete syntax</em>: notation (graphical, textual, tabular…)</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="some-basic-terms-in-mde-22" class="slide level2 diagram-slide">
+<h2 class="diagram-slide">Some basic terms in MDE (2/2)</h2>
+<div class="columns">
+<div class="column" data-align="center" style="width:30%;">
+<div>
+<span class="diagram-data" style="display: none;">
+  graph TD;
+    MM[Metamodel] -->|describes concepts from| ML[Modeling Language];
+    MML[Metamodeling language] -->|used to specify| MM;
+</span>
+<div class="diagram-display"></div>
+</div>
+</div><div class="column" data-align="center" style="width:70%;">
+<ul>
+<li>To reduce the cost of making a modeling language, we often use a <em>metamodeling language</em> <small>(e.g. <a href="https://www.eclipse.org/modeling/emf/">Ecore from EMF</a>, or <a href="https://www.w3.org/XML/Schema">XML Schema</a>)</small></li>
+<li>We create a <em>metamodel</em> of the concepts of the language, which drives its implementation <small>(e.g. an <code>.ecore</code> or <code>.xsd</code> file)</small></li>
+<li>We use other tools (e.g. <a href="https://www.eclipse.org/sirius/">Sirius</a> or <a href="https://www.eclipse.org/Xtext/">Xtext</a>) to implement the concrete syntax (notation)</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="some-examples-of-modeling-languages" class="slide level2">
+<h2>Some examples of modeling languages</h2>
+<ul>
+<li><a href="https://publications.opengroup.org/archimate-library/archimate-standards/c197">Archimate</a>: for enterprise architectures</li>
+<li><a href="https://www.bpmn.org/">BPMN</a>: for business processes</li>
+<li><a href="https://www.mathworks.com/products/simulink.html">Simulink</a>: for control systems</li>
+<li><a href="https://www.omg.org/spec/SysML/">SysML</a>: for systems engineering</li>
+<li><a href="https://github.com/TelluIoT/ThingML">ThingML</a>: for Internet-of-Things devices</li>
+<li><a href="https://www.omg.org/spec/UML/">UML</a>: for software development</li>
+</ul>
+</section>
+<section id="where-does-epsilon-come-into-play" class="slide level2">
+<h2>Where does Epsilon come into play?</h2>
+<ul>
+<li>A model is more than just documentation:
+<ul>
+<li>We can do early validation on the model</li>
+<li>We can transform the model to another language</li>
+<li>We can produce reports and code from it</li>
+</ul></li>
+<li><a href="https://www.eclipse.org/epsilon/">Eclipse Epsilon</a> provides a family of languages dedicated to model-to-model transformation, code generation, model validation, and other common MDE tasks</li>
+</ul>
+</section>
+<section id="how-is-epsilon-structured" class="slide level2 diagram-slide">
+<h2 class="diagram-slide">How is Epsilon structured?</h2>
+<div>
+<span class="diagram-data" style="display: none;">
+graph TD
+    ECL["Model&lt;br/&gt;comparison&lt;br/&gt;(ECL)"]
+    Flock["Model&lt;br/&gt;migration&lt;br/&gt;(Flock)"]
+    EGL["Code&lt;br/&gt;generation&lt;br/&gt;(EGL)"]
+    EVL["Model&lt;br/&gt;validation&lt;br/&gt;(EVL)"]
+    EPL["Pattern&lt;br/&gt;Matching&lt;br/&gt;(EPL)"]
+    EML["Model&lt;br/&gt;Merging&lt;br/&gt;(EML)"]
+    ETL["M2M&lt;br/&gt;Transformation&lt;br/&gt;(ETL)"]
+    EOL["Epsilon Object Language (EOL)"]
+    ETL --&gt; |extends|EOL
+    EML --&gt; |uses for matching|ECL
+    EML --&gt; |extends|ETL
+    EPL --&gt; |extends|EOL
+    ECL --&gt; |extends|EOL
+    EGL --&gt; |preprocessed into|EOL
+    EVL --&gt; |extends|EOL
+    Flock --&gt; |extends|EOL
+    Pinset --&gt; |extends|EOL
+
+    EMC["Epsilon Model Connectivity (EMC)"]
+    EMF["Eclipse Modeling&lt;br/&gt; Framework (EMF)"]
+    Simulink["MATLAB&lt;br/&gt;Simulink"]
+    Excel["Excel&lt;br/&gt;Speadsheets"]
+    PTC["PTC Integrity&lt;br/&gt;Modeller"]
+    Dots["..."]
+
+    EOL --&gt;|accesses models through| EMC
+    EMC --- EMF
+    EMC --- Simulink
+    EMC --- XML
+    EMC --- Excel
+    EMC --- PTC
+    EMC --- CSV
+    EMC --- Dots
+</span>
+<div class="diagram-display" style="min-height: 700px;"></div>
+</div>
+</section>
+<section id="how-can-eclipse-epsilon-be-used" class="slide level2">
+<h2>How can Eclipse Epsilon be used?</h2>
+<ul>
+<li>We will use the <a href="https://www.eclipse.org/epsilon/live">Playground</a> to learn the basics</li>
+<li>The <a href="https://www.eclipse.org/epsilon/download/">Eclipse-based editors</a> are best for rapid development of Epsilon scripts</li>
+<li>Epsilon scripts can be embedded into:
+<ul>
+<li>Your own Eclipse plugins</li>
+<li>Your JVM-based programs (using plain JAR distributions from <a href="https://search.maven.org/search?q=g:org.eclipse.epsilon">Maven Central</a>)</li>
+<li>Your <a href="https://www.eclipse.org/epsilon/doc/workflow/">Ant</a>/<a href="https://www.eclipse.org/epsilon/doc/articles/running-epsilon-ant-tasks-from-command-line/#maven">Maven</a>/<a href="https://www.eclipse.org/epsilon/doc/articles/running-epsilon-ant-tasks-from-command-line/#gradle">Gradle</a> build processes</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="hands-on-exercises-epsilon-object-language-eol" class="title-slide slide level1">
+<h1>Hands-on exercises: Epsilon Object Language (EOL)</h1>
+
+</section>
+<section id="first-steps" class="slide level2">
+<h2>First steps</h2>
+<ul>
+<li>We’ll start with EOL, the base for all other Epsilon languages: it provides imperative code blocks, modularity, and expressions</li>
+<li>Please open the <a href="https://www.eclipse.org/epsilon/live" target="_blank">Epsilon Playground</a></li>
+<li>Select the “Query Project Plan” example project</li>
+</ul>
+</section>
+<section id="playground-ui-for-sample-eol-project" class="slide level2">
+<h2>Playground UI for sample EOL project</h2>
+<p><img data-src="img/playground-ui.png" /></p>
+</section>
+<section id="metamodel-for-sample-eol-project" class="slide level2">
+<h2>Metamodel for sample EOL project</h2>
+<div class="columns">
+<div class="column" data-align="center" style="width:30%;">
+<p><img data-src="img/emfatic-metamodel.png" /></p>
+</div><div class="column" data-align="center" style="width:70%;">
+<ul>
+<li>Playground uses <a href="https://www.eclipse.org/emfatic/">Emfatic</a> as concrete syntax for metamodels</li>
+<li>Metamodel describes a task tracking domain-specific modeling language (DSML):
+<ul>
+<li>Projects have title + description, contain 0+ tasks and people</li>
+<li>Tasks have title + start + duration, contain effort assignments</li>
+<li>People have names</li>
+<li>An effort assignment has percentage, refers to a person</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="model-for-sample-eol-project" class="slide level2">
+<h2>Model for sample EOL project</h2>
+<p><img data-src="img/flexmi-model.png" /></p>
+<ul>
+<li>Playground uses “fuzzy” <a href="https://www.eclipse.org/epsilon/doc/flexmi/">Flexmi XML</a> for models</li>
+<li>Alice and Bob work across 3 tasks (analysis, design, and implementation)</li>
+</ul>
+</section>
+<section id="first-bit-of-eol-code" class="slide level2">
+<h2>First bit of EOL code!</h2>
+<ul>
+<li><p>Replace the “Program” with this, and click on <img data-src="img/eol-run.png" style="margin: 0px;" />:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Task<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="at">first</span><span class="op">.</span><span class="at">title</span><span class="op">.</span><span class="fu">println</span>()<span class="op">;</span></span></code></pre></div></li>
+<li><p><code>Type.all</code> = collection of all <code>Type</code> instances</p></li>
+<li><p>All collections support <a href="https://www.eclipse.org/epsilon/doc/eol/#collections-and-maps">a number of operations</a>: <code>first</code> returns the first element</p></li>
+<li><p><code>println()</code> is one operation supported by <a href="https://www.eclipse.org/epsilon/doc/eol/#types">any value</a>: you can also provide a string as a prefix (e.g. <code>"title: "</code>)</p></li>
+</ul>
+</section>
+<section id="looping-with-for" class="slide level2">
+<h2>Looping with for</h2>
+<ul>
+<li><p>A “foreach” loop in EOL is done as follows:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (element <span class="kw">in</span> collection) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">/* code */</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></li>
+<li><p>Change the code to print the title of all tasks</p></li>
+</ul>
+<aside class="notes">
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="kw">in</span> Task<span class="op">.</span><span class="at">all</span>) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  t<span class="op">.</span><span class="at">title</span><span class="op">.</span><span class="fu">println</span>(<span class="st">&#39;title: &#39;</span>)<span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</aside>
+</section>
+<section id="first-order-operations" class="slide level2">
+<h2>First-order operations</h2>
+<ul>
+<li>Show only the tasks longer than 3 days</li>
+<li>Two approaches:
+<ul>
+<li><code>if</code> inside the <code>for</code> loop (as in C / JavaScript)</li>
+<li>Use <code>collection.select(e | condition)</code></li>
+</ul></li>
+<li>EOL collections have other useful <a href="https://www.eclipse.org/epsilon/doc/eol/#collections-and-maps">“first-order operations”</a> like <code>select</code>, replacing many loops:
+<ul>
+<li>Closures, key-value mappings, first match</li>
+<li>Universal/existential quantifiers</li>
+<li>Sorting by expression, etc.</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="kw">in</span> Task<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="fu">select</span>(e <span class="op">|</span> e<span class="op">.</span><span class="at">duration</span> <span class="op">&gt;</span> <span class="dv">3</span>)) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  t<span class="op">.</span><span class="at">title</span><span class="op">.</span><span class="fu">println</span>(<span class="st">&#39;title: &#39;</span>)<span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</aside>
+</section>
+<section id="context-operations" class="slide level2">
+<h2>Context operations</h2>
+<ul>
+<li><p>Let’s refactor the idea of “large task” to a <em>context operation</em>: place it at the end of “Program”.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>operation Task <span class="fu">isLarge</span>(threshold) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> self<span class="op">.</span><span class="at">duration</span> <span class="op">&gt;</span> threshold<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></li>
+<li><p>Now you can do <code>t.isLarge(3)</code> if <code>t</code> is a <code>Task</code></p></li>
+<li><p>It’s useful to create a library of operations for your DSML, which you can reuse from any Epsilon script by using the <code>import</code> statement.</p></li>
+</ul>
+<aside class="notes">
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="kw">in</span> Task<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="fu">select</span>(e <span class="op">|</span> e<span class="op">.</span><span class="fu">isLarge</span>(<span class="dv">3</span>))) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  t<span class="op">.</span><span class="at">title</span><span class="op">.</span><span class="fu">println</span>(<span class="st">&#39;title: &#39;</span>)<span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>operation Task <span class="fu">isLarge</span>(threshold) {</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> self<span class="op">.</span><span class="at">duration</span> <span class="op">&gt;</span> threshold<span class="op">;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</aside>
+</section>
+<section id="in-place-transformations" class="slide level2">
+<h2>In-place transformations</h2>
+<ul>
+<li><p>EOL is often used for small imperative in-place model transformations</p></li>
+<li><p>For instance, if we want to add a new person:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> p <span class="op">=</span> <span class="kw">new</span> Person<span class="op">;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p<span class="op">.</span><span class="at">name</span> <span class="op">=</span> <span class="st">&quot;Charlie&quot;</span><span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Project<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="at">first</span><span class="op">.</span><span class="at">people</span><span class="op">.</span><span class="fu">add</span>(p)<span class="op">;</span></span></code></pre></div></li>
+<li><p>Try adding a “Testing” task taking 4 days before your <code>for</code> loop: it should appear in the output</p></li>
+</ul>
+<aside class="notes">
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> t <span class="op">=</span> <span class="kw">new</span> Task<span class="op">;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>t<span class="op">.</span><span class="at">title</span> <span class="op">=</span> <span class="st">&quot;Testing&quot;</span><span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>t<span class="op">.</span><span class="at">duration</span> <span class="op">=</span> <span class="dv">4</span><span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>Project<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="at">first</span><span class="op">.</span><span class="at">tasks</span><span class="op">.</span><span class="fu">add</span>(t)<span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="kw">in</span> Task<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="fu">select</span>(e <span class="op">|</span> e<span class="op">.</span><span class="fu">isLarge</span>(<span class="dv">3</span>))) {</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  t<span class="op">.</span><span class="at">title</span><span class="op">.</span><span class="fu">println</span>(<span class="st">&#39;title: &#39;</span>)<span class="op">;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>operation Task <span class="fu">isLarge</span>(threshold) {</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> self<span class="op">.</span><span class="at">duration</span> <span class="op">&gt;</span> threshold<span class="op">;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</aside>
+</section></section>
+<section>
+<section id="hands-on-exercises-epsilon-transformation-language-etl" class="title-slide slide level1">
+<h1>Hands-on exercises: Epsilon Transformation Language (ETL)</h1>
+
+</section>
+<section id="model-to-model-transformations" class="slide level2 diagram-slide">
+<h2 class="diagram-slide">Model-to-model transformations</h2>
+<div>
+<span class="diagram-data" style="display: none;">
+flowchart TD;
+  subgraph "1. Develop transformation";
+    MM1[Source Metamodel] -->|specifies concepts in| ML1[Source Modeling Language];
+    MM2[Target Metamodel] -->|specifies concepts in| ML2[Target Modeling Language];
+    ETLP[ETL rule] -->|from type in| MM1;
+    ETLP -->|to types in| MM2;
+  end;
+  subgraph "2. Run transformation";
+    ETLE[ETL execution] -->|from elements in| M1;
+    ML1 --->|used to specify| M1[Source Model];
+    ML2 --->|used to specify| M2[Target Model];
+    ETLE -->|populates| M2;
+  end;
+</span>
+<div class="diagram-display" style="min-height: 600px;"></div>
+</div>
+</section>
+<section id="first-steps-with-etl" class="slide level2">
+<h2>First steps with ETL</h2>
+<ul>
+<li>We will work on transforming a tree model into a graph model, step by step.</li>
+<li>Open the “Transform Tree to Graph” sample project in the Playground.</li>
+</ul>
+</section>
+<section id="playground-ui-for-sample-etl-project" class="slide level2">
+<h2>Playground UI for sample ETL project</h2>
+<p><img data-src="img/playground-ui-etl.png" style="width:90.0%" /></p>
+</section>
+<section id="creating-our-first-rule" class="slide level2">
+<h2>Creating our first rule</h2>
+<ul>
+<li>Replace the contents of “Transformation” with this, and click on <img data-src="img/eol-run.png" style="margin: 0px;" />:</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>rule Tree2Graph</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  transform t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  to g<span class="op">:</span> Target<span class="op">!</span>Graph {</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<ul>
+<li><code>Source!Tree</code>: <code>Tree</code> type in source metamodel</li>
+<li><code>Target!Graph</code>: <code>Graph</code> type in target metamodel</li>
+<li>We get four <code>Graph</code>s (one per <code>Tree</code>)</li>
+</ul>
+</section>
+<section id="adding-a-guard" class="slide level2">
+<h2>Adding a guard</h2>
+<ul>
+<li>We only want the <code>Graph</code> from the root <code>Tree</code></li>
+<li>We can set a condition as a <em>guard</em> for the rule</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>rule Tree2Graph</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  transform t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  to g<span class="op">:</span> Target<span class="op">!</span>Graph {</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">guard</span><span class="op">:</span> t<span class="op">.</span><span class="at">parent</span><span class="op">.</span><span class="fu">isUndefined</span>()</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<ul>
+<li>Alternatively, the guard can be a block of EOL code returning a Boolean value</li>
+</ul>
+</section>
+<section id="adding-the-name" class="slide level2">
+<h2>Adding the name</h2>
+<ul>
+<li>Besides a guard, the body of a rule can have arbitrary EOL code: loops, variables, etc.</li>
+<li>Can you set the name of the <code>Graph</code> to the label of the <code>Tree</code>?</li>
+</ul>
+<div class="fragment">
+<div class="sourceCode" id="cb11"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>rule Tree2Graph</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  transform t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  to g<span class="op">:</span> Target<span class="op">!</span>Graph {</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">guard</span><span class="op">:</span> t<span class="op">.</span><span class="at">parent</span><span class="op">.</span><span class="fu">isUndefined</span>()</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  g<span class="op">.</span><span class="at">name</span> <span class="op">=</span> t<span class="op">.</span><span class="at">label</span><span class="op">;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+</section>
+<section id="mapping-trees-to-nodes" class="slide level2">
+<h2>Mapping trees to nodes</h2>
+<ul>
+<li>Try adding a rule that:
+<ul>
+<li>Produces <code>Node</code>s from <code>Tree</code>s which have a parent</li>
+<li>Sets the <code>name</code> of the <code>Node</code> to the <code>label</code> of the <code>Tree</code></li>
+</ul></li>
+</ul>
+<div class="fragment">
+<p>The rule would look like this:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>rule Tree2Node</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  transform t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  to n<span class="op">:</span> Target<span class="op">!</span><span class="bu">Node</span> {</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">guard</span><span class="op">:</span> t<span class="op">.</span><span class="at">parent</span><span class="op">.</span><span class="fu">isDefined</span>()</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  n<span class="op">.</span><span class="at">name</span> <span class="op">=</span> t<span class="op">.</span><span class="at">label</span><span class="op">;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+</section>
+<section id="adding-the-nodes-to-the-graph" class="slide level2">
+<h2>Adding the nodes to the Graph</h2>
+<ul>
+<li>Extend <code>Tree2Node</code> to add the new <code>Node</code> to the <code>nodes</code> of the <code>Graph</code>:
+<ol type="1">
+<li>Fetch the only <code>Target!Graph</code></li>
+<li>Access its <code>nodes</code></li>
+<li><code>add()</code> the <code>Node</code></li>
+</ol></li>
+</ul>
+<div class="fragment">
+<div class="sourceCode" id="cb13"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>rule Tree2Node</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  transform t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  to n<span class="op">:</span> Target<span class="op">!</span><span class="bu">Node</span> {</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  n<span class="op">.</span><span class="at">name</span> <span class="op">=</span> t<span class="op">.</span><span class="at">label</span><span class="op">;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  Target<span class="op">!</span>Graph<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="at">first</span><span class="op">.</span><span class="at">nodes</span><span class="op">.</span><span class="fu">add</span>(n)<span class="op">;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<aside class="notes">
+<p>Tree2Node can be placed anywhere in the ETL script, because in the absence of any lazy rules, ETL uses a “fast” transformation strategy where all the target elements are created first (while checking guards), and <em>then</em> the bodies of the rules are run.</p>
+</aside>
+</div>
+</section>
+<section id="adding-child-edges-with-equivalent" class="slide level2">
+<h2>Adding child edges with equivalent()</h2>
+<ul>
+<li>Next, we want to link the new <code>Node</code> to all its children: this requires knowing the <code>Node</code>s that were produced from the child <code>Tree</code>s</li>
+<li>ETL has the <code>t.equivalent()</code> operation for this: called on a <code>Tree t</code>, it will return the first element produced from it</li>
+</ul>
+<p>Try extending the <code>Tree2Node</code> rule to do this.</p>
+</section>
+<section id="adding-parent-edges-extended-rule" class="slide level2">
+<h2>Adding parent edges: extended rule</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>rule Tree2Node</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  transform t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  to n<span class="op">:</span> Target<span class="op">!</span><span class="bu">Node</span> {</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">guard</span><span class="op">:</span> t<span class="op">.</span><span class="at">parent</span><span class="op">.</span><span class="fu">isDefined</span>()</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  n<span class="op">.</span><span class="at">name</span> <span class="op">=</span> t<span class="op">.</span><span class="at">label</span><span class="op">;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> g <span class="op">=</span> Target<span class="op">!</span>Graph<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="at">first</span><span class="op">;</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  g<span class="op">.</span><span class="at">nodes</span><span class="op">.</span><span class="fu">add</span>(n)<span class="op">;</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (c <span class="kw">in</span> t<span class="op">.</span><span class="at">children</span>) {</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> e <span class="op">=</span> <span class="kw">new</span> Target<span class="op">!</span>Edge<span class="op">;</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    e<span class="op">.</span><span class="at">source</span> <span class="op">=</span> n<span class="op">;</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    e<span class="op">.</span><span class="at">target</span> <span class="op">=</span> c<span class="op">.</span><span class="fu">equivalent</span>()<span class="op">;</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    g<span class="op">.</span><span class="at">edges</span><span class="op">.</span><span class="fu">add</span>(e)<span class="op">;</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</section>
+<section id="there-is-more-to-etl" class="slide level2">
+<h2>There is more to ETL!</h2>
+<p>We haven’t touched on quite a few things:</p>
+<ul>
+<li>Rule scheduling: <code>@primary</code> / <code>@lazy</code> / <code>@greedy</code></li>
+<li>Rule inheritance and overriding</li>
+<li>The <code>::=</code> operator</li>
+<li>Persistence and use of transformation traces</li>
+</ul>
+</section></section>
+<section>
+<section id="walkthrough-epsilon-generation-language-egl" class="title-slide slide level1">
+<h1>Walkthrough: Epsilon Generation Language (EGL)</h1>
+
+</section>
+<section id="what-is-egl-for" class="slide level2">
+<h2>What is EGL for?</h2>
+<ul>
+<li>EGL implements model-to-text transformations: we can produce code, reports, images (e.g. using <a href="https://graphviz.org/">Graphviz</a>) from a model</li>
+<li>EGL is a templating language, in the style of <a href="https://twig.symfony.com/">Twig</a>, <a href="https://jinja.palletsprojects.com/en/3.0.x/">Jinja</a>, or raw PHP</li>
+<li>The Playground visualisations and the <a href="https://www.eclipse.org/epsilon/doc/picto/">Picto tool</a> are based on EGL</li>
+</ul>
+</section>
+<section id="demo-time-in-the-playground" class="slide level2">
+<h2>Demo time in the Playground</h2>
+<p>Let’s take a look at “Generate Effort Table”:</p>
+<p><img data-src="img/playground-ui-egl.png" style="width:80.0%" /></p>
+</section>
+<section id="other-egl-features" class="slide level2">
+<h2>Other EGL features</h2>
+<ul>
+<li>Protected regions, which can be customized by develoeprs and kept across regenerations</li>
+<li>Formatters, i.e. for automatically indenting code according to style guidelines</li>
+<li>Coordination through the <a href="https://www.eclipse.org/epsilon/doc/egx/">EGX</a> language, for producing multiple files</li>
+</ul>
+</section></section>
+<section>
+<section id="conclusion" class="title-slide slide level1">
+<h1>Conclusion</h1>
+
+</section>
+<section id="session-recap" class="slide level2 overview">
+<h2 class="overview">Session recap</h2>
+<p><img data-src="img/overview-1-epsilon.png" /> <img data-src="img/overview-2-eol.png" /> <img data-src="img/overview-3-etl.png" /> <img data-src="img/overview-4-egl.png" /></p>
+</section>
+<section id="thank-you" class="slide level2">
+<h2>Thank you!</h2>
+<p>Antonio Garcia-Dominguez</p>
+<p>a.garcia-dominguez AT aston.ac.uk</p>
+<p><a href="http://twitter.com/antoniogado">@antoniogado</a></p>
+</section></section>
+    </div>
+  </div>
+
+  <script src="./reveal.js/dist/reveal.js"></script>
+
+  // reveal.js plugins
+  <script src="./reveal.js/plugin/mermaid/mermaid.js"></script>
+  <script src="./reveal.js/plugin/notes/notes.js"></script>
+  <script src="./reveal.js/plugin/search/search.js"></script>
+  <script src="./reveal.js/plugin/zoom/zoom.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Push each slide change to the browser history
+        history: true,
+
+        // reveal.js plugins
+        plugins: [
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>
