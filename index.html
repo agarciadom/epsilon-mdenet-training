@@ -313,7 +313,7 @@ graph TD
 <h2>First bit of EOL code!</h2>
 <ul>
 <li><p>Replace the “Program” with this, and click on <img data-src="img/eol-run.png" style="margin: 0px;" />:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Task<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="at">first</span><span class="op">.</span><span class="at">title</span><span class="op">.</span><span class="fu">println</span>()<span class="op">;</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb1"><pre class="sourceCode eol"><code class="sourceCode eol"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">Task</span>.<span class="va">all</span>.<span class="va">first</span>.<span class="va">title</span>.<span class="at">println</span>()<span class="op">;</span></span></code></pre></div></li>
 <li><p><code>Type.all</code> = collection of all <code>Type</code> instances</p></li>
 <li><p>All collections support <a href="https://www.eclipse.org/epsilon/doc/eol/#collections-and-maps">a number of operations</a>: <code>first</code> returns the first element</p></li>
 <li><p><code>println()</code> is one operation supported by <a href="https://www.eclipse.org/epsilon/doc/eol/#types">any value</a>: you can also provide a string as a prefix (e.g. <code>"title: "</code>)</p></li>
@@ -323,14 +323,14 @@ graph TD
 <h2>Looping with for</h2>
 <ul>
 <li><p>A “foreach” loop in EOL is done as follows:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (element <span class="kw">in</span> collection) {</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode eol"><code class="sourceCode eol"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (element <span class="kw">in</span> collection) {</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">/* code */</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></li>
 <li><p>Change the code to print the title of all tasks</p></li>
 </ul>
 <aside class="notes">
-<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="kw">in</span> Task<span class="op">.</span><span class="at">all</span>) {</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  t<span class="op">.</span><span class="at">title</span><span class="op">.</span><span class="fu">println</span>(<span class="st">&#39;title: &#39;</span>)<span class="op">;</span></span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode eol"><code class="sourceCode eol"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="kw">in</span> <span class="va">Task</span>.<span class="at">all</span>) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="va">t</span>.<span class="va">title</span>.<span class="at">println</span>(<span class="st">&#39;title: &#39;</span>)<span class="op">;</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </aside>
 </section>
@@ -351,8 +351,8 @@ graph TD
 </ul></li>
 </ul>
 <aside class="notes">
-<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="kw">in</span> Task<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="fu">select</span>(e <span class="op">|</span> e<span class="op">.</span><span class="at">duration</span> <span class="op">&gt;</span> <span class="dv">3</span>)) {</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  t<span class="op">.</span><span class="at">title</span><span class="op">.</span><span class="fu">println</span>(<span class="st">&#39;title: &#39;</span>)<span class="op">;</span></span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode eol"><code class="sourceCode eol"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="kw">in</span> <span class="va">Task</span>.<span class="va">all</span>.<span class="at">select</span>(e <span class="op">|</span> <span class="va">e</span>.<span class="at">duration</span> <span class="op">&gt;</span> <span class="dv">3</span>)) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="va">t</span>.<span class="va">title</span>.<span class="at">println</span>(<span class="st">&#39;title: &#39;</span>)<span class="op">;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </aside>
 </section>
@@ -360,19 +360,19 @@ graph TD
 <h2>Context operations</h2>
 <ul>
 <li><p>Let’s refactor the idea of “large task” to a <em>context operation</em>: place it at the end of “Program”.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>operation Task <span class="fu">isLarge</span>(threshold) {</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> self<span class="op">.</span><span class="at">duration</span> <span class="op">&gt;</span> threshold<span class="op">;</span></span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode eol"><code class="sourceCode eol"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">operation</span> Task <span class="at">isLarge</span>(threshold) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">self</span>.<span class="at">duration</span> <span class="op">&gt;</span> threshold<span class="op">;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></li>
 <li><p>Now you can do <code>t.isLarge(3)</code> if <code>t</code> is a <code>Task</code></p></li>
 <li><p>It’s useful to create a library of operations for your DSML, which you can reuse from any Epsilon script by using the <code>import</code> statement.</p></li>
 </ul>
 <aside class="notes">
-<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="kw">in</span> Task<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="fu">select</span>(e <span class="op">|</span> e<span class="op">.</span><span class="fu">isLarge</span>(<span class="dv">3</span>))) {</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  t<span class="op">.</span><span class="at">title</span><span class="op">.</span><span class="fu">println</span>(<span class="st">&#39;title: &#39;</span>)<span class="op">;</span></span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode eol"><code class="sourceCode eol"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="kw">in</span> <span class="va">Task</span>.<span class="va">all</span>.<span class="at">select</span>(e <span class="op">|</span> <span class="va">e</span>.<span class="at">isLarge</span>(<span class="dv">3</span>))) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="va">t</span>.<span class="va">title</span>.<span class="at">println</span>(<span class="st">&#39;title: &#39;</span>)<span class="op">;</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>operation Task <span class="fu">isLarge</span>(threshold) {</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> self<span class="op">.</span><span class="at">duration</span> <span class="op">&gt;</span> threshold<span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">operation</span> Task <span class="at">isLarge</span>(threshold) {</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">self</span>.<span class="at">duration</span> <span class="op">&gt;</span> threshold<span class="op">;</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </aside>
 </section>
@@ -381,23 +381,23 @@ graph TD
 <ul>
 <li><p>EOL is often used for small imperative in-place model transformations</p></li>
 <li><p>For instance, if we want to add a new person:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> p <span class="op">=</span> <span class="kw">new</span> Person<span class="op">;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p<span class="op">.</span><span class="at">name</span> <span class="op">=</span> <span class="st">&quot;Charlie&quot;</span><span class="op">;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Project<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="at">first</span><span class="op">.</span><span class="at">people</span><span class="op">.</span><span class="fu">add</span>(p)<span class="op">;</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb7"><pre class="sourceCode eol"><code class="sourceCode eol"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> p <span class="op">=</span> <span class="kw">new</span> Person<span class="op">;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="va">p</span>.<span class="at">name</span> <span class="op">=</span> <span class="st">&quot;Charlie&quot;</span><span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="va">Project</span>.<span class="va">all</span>.<span class="va">first</span>.<span class="va">people</span>.<span class="at">add</span>(p)<span class="op">;</span></span></code></pre></div></li>
 <li><p>Try adding a “Testing” task taking 4 days before your <code>for</code> loop: it should appear in the output</p></li>
 </ul>
 <aside class="notes">
-<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> t <span class="op">=</span> <span class="kw">new</span> Task<span class="op">;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>t<span class="op">.</span><span class="at">title</span> <span class="op">=</span> <span class="st">&quot;Testing&quot;</span><span class="op">;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>t<span class="op">.</span><span class="at">duration</span> <span class="op">=</span> <span class="dv">4</span><span class="op">;</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>Project<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="at">first</span><span class="op">.</span><span class="at">tasks</span><span class="op">.</span><span class="fu">add</span>(t)<span class="op">;</span></span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode eol"><code class="sourceCode eol"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> t <span class="op">=</span> <span class="kw">new</span> Task<span class="op">;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">t</span>.<span class="at">title</span> <span class="op">=</span> <span class="st">&quot;Testing&quot;</span><span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="va">t</span>.<span class="at">duration</span> <span class="op">=</span> <span class="dv">4</span><span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="va">Project</span>.<span class="va">all</span>.<span class="va">first</span>.<span class="va">tasks</span>.<span class="at">add</span>(t)<span class="op">;</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="kw">in</span> Task<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="fu">select</span>(e <span class="op">|</span> e<span class="op">.</span><span class="fu">isLarge</span>(<span class="dv">3</span>))) {</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  t<span class="op">.</span><span class="at">title</span><span class="op">.</span><span class="fu">println</span>(<span class="st">&#39;title: &#39;</span>)<span class="op">;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (t <span class="kw">in</span> <span class="va">Task</span>.<span class="va">all</span>.<span class="at">select</span>(e <span class="op">|</span> <span class="va">e</span>.<span class="at">isLarge</span>(<span class="dv">3</span>))) {</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="va">t</span>.<span class="va">title</span>.<span class="at">println</span>(<span class="st">&#39;title: &#39;</span>)<span class="op">;</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>operation Task <span class="fu">isLarge</span>(threshold) {</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> self<span class="op">.</span><span class="at">duration</span> <span class="op">&gt;</span> threshold<span class="op">;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="kw">operation</span> Task <span class="at">isLarge</span>(threshold) {</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">self</span>.<span class="at">duration</span> <span class="op">&gt;</span> threshold<span class="op">;</span></span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </aside>
 </section></section>
@@ -443,9 +443,9 @@ flowchart TD;
 <ul>
 <li>Replace the contents of “Transformation” with this, and click on <img data-src="img/eol-run.png" style="margin: 0px;" />:</li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>rule Tree2Graph</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  transform t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  to g<span class="op">:</span> Target<span class="op">!</span>Graph {</span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode etl"><code class="sourceCode etl"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">rule</span> Tree2Graph</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">transform</span> t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">to</span> g<span class="op">:</span> Target<span class="op">!</span>Graph {</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <ul>
@@ -460,10 +460,10 @@ flowchart TD;
 <li>We only want the <code>Graph</code> from the root <code>Tree</code></li>
 <li>We can set a condition as a <em>guard</em> for the rule</li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>rule Tree2Graph</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  transform t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  to g<span class="op">:</span> Target<span class="op">!</span>Graph {</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">guard</span><span class="op">:</span> t<span class="op">.</span><span class="at">parent</span><span class="op">.</span><span class="fu">isUndefined</span>()</span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode etl"><code class="sourceCode etl"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">rule</span> Tree2Graph</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">transform</span> t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">to</span> g<span class="op">:</span> Target<span class="op">!</span>Graph {</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">guard</span><span class="op">:</span> <span class="va">t</span>.<span class="va">parent</span>.<span class="at">isUndefined</span>()</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <ul>
 <li>Alternatively, the guard can be a block of EOL code returning a Boolean value</li>
@@ -476,11 +476,11 @@ flowchart TD;
 <li>Can you set the name of the <code>Graph</code> to the label of the <code>Tree</code>?</li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb11"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>rule Tree2Graph</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  transform t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  to g<span class="op">:</span> Target<span class="op">!</span>Graph {</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">guard</span><span class="op">:</span> t<span class="op">.</span><span class="at">parent</span><span class="op">.</span><span class="fu">isUndefined</span>()</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  g<span class="op">.</span><span class="at">name</span> <span class="op">=</span> t<span class="op">.</span><span class="at">label</span><span class="op">;</span></span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode etl"><code class="sourceCode etl"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">rule</span> Tree2Graph</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">transform</span> t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">to</span> g<span class="op">:</span> Target<span class="op">!</span>Graph {</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">guard</span><span class="op">:</span> <span class="va">t</span>.<span class="va">parent</span>.<span class="at">isUndefined</span>()</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="va">g</span>.<span class="at">name</span> <span class="op">=</span> <span class="va">t</span>.<span class="at">label</span><span class="op">;</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </section>
@@ -495,11 +495,11 @@ flowchart TD;
 </ul>
 <div class="fragment">
 <p>The rule would look like this:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>rule Tree2Node</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  transform t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  to n<span class="op">:</span> Target<span class="op">!</span><span class="bu">Node</span> {</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">guard</span><span class="op">:</span> t<span class="op">.</span><span class="at">parent</span><span class="op">.</span><span class="fu">isDefined</span>()</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  n<span class="op">.</span><span class="at">name</span> <span class="op">=</span> t<span class="op">.</span><span class="at">label</span><span class="op">;</span></span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode etl"><code class="sourceCode etl"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">rule</span> Tree2Node</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">transform</span> t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">to</span> n<span class="op">:</span> Target<span class="op">!</span>Node {</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">guard</span><span class="op">:</span> <span class="va">t</span>.<span class="va">parent</span>.<span class="at">isDefined</span>()</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="va">n</span>.<span class="at">name</span> <span class="op">=</span> <span class="va">t</span>.<span class="at">label</span><span class="op">;</span></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </section>
@@ -514,11 +514,11 @@ flowchart TD;
 </ol></li>
 </ul>
 <div class="fragment">
-<div class="sourceCode" id="cb13"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>rule Tree2Node</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  transform t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  to n<span class="op">:</span> Target<span class="op">!</span><span class="bu">Node</span> {</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  n<span class="op">.</span><span class="at">name</span> <span class="op">=</span> t<span class="op">.</span><span class="at">label</span><span class="op">;</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  Target<span class="op">!</span>Graph<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="at">first</span><span class="op">.</span><span class="at">nodes</span><span class="op">.</span><span class="fu">add</span>(n)<span class="op">;</span></span>
+<div class="sourceCode" id="cb13"><pre class="sourceCode etl"><code class="sourceCode etl"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">rule</span> Tree2Node</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">transform</span> t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">to</span> n<span class="op">:</span> Target<span class="op">!</span>Node {</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="va">n</span>.<span class="at">name</span> <span class="op">=</span> <span class="va">t</span>.<span class="at">label</span><span class="op">;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  Target<span class="op">!</span><span class="va">Graph</span>.<span class="va">all</span>.<span class="va">first</span>.<span class="va">nodes</span>.<span class="at">add</span>(n)<span class="op">;</span></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <aside class="notes">
 <p>Tree2Node can be placed anywhere in the ETL script, because in the absence of any lazy rules, ETL uses a “fast” transformation strategy where all the target elements are created first (while checking guards), and <em>then</em> the bodies of the rules are run.</p>
@@ -535,21 +535,21 @@ flowchart TD;
 </section>
 <section id="adding-parent-edges-extended-rule" class="slide level2">
 <h2>Adding parent edges: extended rule</h2>
-<div class="sourceCode" id="cb14"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>rule Tree2Node</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  transform t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  to n<span class="op">:</span> Target<span class="op">!</span><span class="bu">Node</span> {</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">guard</span><span class="op">:</span> t<span class="op">.</span><span class="at">parent</span><span class="op">.</span><span class="fu">isDefined</span>()</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  n<span class="op">.</span><span class="at">name</span> <span class="op">=</span> t<span class="op">.</span><span class="at">label</span><span class="op">;</span></span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode etl"><code class="sourceCode etl"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">rule</span> Tree2Node</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">transform</span> t<span class="op">:</span> Source<span class="op">!</span>Tree</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">to</span> n<span class="op">:</span> Target<span class="op">!</span>Node {</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">guard</span><span class="op">:</span> <span class="va">t</span>.<span class="va">parent</span>.<span class="at">isDefined</span>()</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="va">n</span>.<span class="at">name</span> <span class="op">=</span> <span class="va">t</span>.<span class="at">label</span><span class="op">;</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> g <span class="op">=</span> Target<span class="op">!</span>Graph<span class="op">.</span><span class="at">all</span><span class="op">.</span><span class="at">first</span><span class="op">;</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  g<span class="op">.</span><span class="at">nodes</span><span class="op">.</span><span class="fu">add</span>(n)<span class="op">;</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> g <span class="op">=</span> Target<span class="op">!</span><span class="va">Graph</span>.<span class="va">all</span>.<span class="at">first</span><span class="op">;</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="va">g</span>.<span class="va">nodes</span>.<span class="at">add</span>(n)<span class="op">;</span></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (c <span class="kw">in</span> t<span class="op">.</span><span class="at">children</span>) {</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (c <span class="kw">in</span> <span class="va">t</span>.<span class="at">children</span>) {</span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> e <span class="op">=</span> <span class="kw">new</span> Target<span class="op">!</span>Edge<span class="op">;</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    e<span class="op">.</span><span class="at">source</span> <span class="op">=</span> n<span class="op">;</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    e<span class="op">.</span><span class="at">target</span> <span class="op">=</span> c<span class="op">.</span><span class="fu">equivalent</span>()<span class="op">;</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="va">e</span>.<span class="at">source</span> <span class="op">=</span> n<span class="op">;</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="va">e</span>.<span class="at">target</span> <span class="op">=</span> <span class="va">c</span>.<span class="at">equivalent</span>()<span class="op">;</span></span>
 <span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    g<span class="op">.</span><span class="at">edges</span><span class="op">.</span><span class="fu">add</span>(e)<span class="op">;</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="va">g</span>.<span class="va">edges</span>.<span class="at">add</span>(e)<span class="op">;</span></span>
 <span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </section>
